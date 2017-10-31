@@ -24,7 +24,7 @@ const renderer = new Renderer({
 });
 const app = new Container();
 const loader = new Loader();
-const wrapper = document.querySelector('#wrapper');
+const wrapper = document.body;
 const colors = [0x5C4B51, 0x8CBEB2, 0xF2EBBF, 0xF3B562, 0xF06060];
 const scrolls = [];
 
@@ -53,7 +53,7 @@ loader.onLoaded( ()=>{
   // rejig screen
   document.documentElement.classList.remove('loading');
   document.documentElement.classList.add('loaded');
-  wrapper.style.height = `${window.innerHeight * totalScreens}px`;
+  wrapper.style.height = `${100 * totalScreens}%`;
 
   // add loaders
   for (let index = 0; index < totalScreens; index++) {

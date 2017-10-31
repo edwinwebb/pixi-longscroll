@@ -14,6 +14,7 @@ import ScaledContainer from './displayobjects/ScaledContainer/ScaledContainer';
 import Store from './stores/Store';
 import * as TWEEN from 'es6-tween';
 import Loader from './screens/Loader';
+import LongScroll from './screens/LongScroll';
 
 import BG from './displayobjects/Background/diagnostic.png';
 import SEEDS from './displayobjects/Background/millet.jpg';
@@ -24,6 +25,7 @@ const renderer = new Renderer({
 const app = new ScaledContainer();
 const loader = new Loader();
 const wrapper = document.querySelector('#wrapper');
+const colors = [0x5C4B51, 0x8CBEB2, 0xF2EBBF, 0xF3B562, 0xF06060];
 
 // append
 wrapper.appendChild(renderer.view);
@@ -43,9 +45,19 @@ loader.start([BG, SEEDS]);
 // remove loader then show example once complete
 loader.onLoaded( ()=>{
   app.removeChild(loader);
+  // rejig screen
   document.documentElement.classList.remove('loading');
   document.documentElement.classList.add('loaded');
   wrapper.style.height = `${window.innerHeight * totalScreens}px`;
+
+  // add loaders
+  for (let index = 0; index < totalScreens; index++) {
+    const e = new LongScroll(colors[index]);
+    const { height } = Store.getState().Renderer;
+    app.addChild(e);
+    e.position.y = height * index;
+  }
+
 } );
 
 // start the render loop

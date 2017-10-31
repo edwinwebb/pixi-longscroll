@@ -4,6 +4,9 @@ Quick demo for long-scrolling in Pixi.js
 
 Forked from my [Pixi Seed](https://github.com/edwinwebb/pixi-longscroll) project.
 
+## TODO
+* Add some 
+
 ## License
 
 Copyright (c) 2017 Edwin Webb

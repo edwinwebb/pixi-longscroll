@@ -8,6 +8,7 @@
  */
 
 import './index.html';
+import { totalScreens } from './constants/AppConstants';
 import Renderer from './Renderer/Renderer';
 import ScaledContainer from './displayobjects/ScaledContainer/ScaledContainer';
 import Store from './stores/Store';
@@ -17,12 +18,15 @@ import Loader from './screens/Loader';
 import BG from './displayobjects/Background/diagnostic.png';
 import SEEDS from './displayobjects/Background/millet.jpg';
 
-const renderer = new Renderer({resolution: window.devicePixelRatio});
+const renderer = new Renderer({
+  resolution: window.devicePixelRatio
+});
 const app = new ScaledContainer();
 const loader = new Loader();
+const wrapper = document.querySelector('#wrapper');
 
 // append
-document.body.appendChild(renderer.view);
+wrapper.appendChild(renderer.view);
 
 // animate loop for tween
 Store.subscribe( ()=>{
@@ -39,6 +43,9 @@ loader.start([BG, SEEDS]);
 // remove loader then show example once complete
 loader.onLoaded( ()=>{
   app.removeChild(loader);
+  document.documentElement.classList.remove('loading');
+  document.documentElement.classList.add('loaded');
+  wrapper.style.height = `${window.innerHeight * totalScreens}px`;
 } );
 
 // start the render loop

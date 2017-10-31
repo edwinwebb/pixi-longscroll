@@ -1,10 +1,10 @@
 import { canvasWidth, canvasHeight } from '../constants/AppConstants';
 
 const windowSize = () => ({
-  width: window.innerWidth,
+  width: document.body.clientWidth,
   height: window.innerHeight,
   resolution: window.devicePixelRatio,
-  stageCenter: {x: window.innerWidth / 2, y: window.innerHeight / 2}
+  stageCenter: {x: document.body.clientWidth / 2, y: window.innerHeight / 2}
 });
 
 const defaultState = {

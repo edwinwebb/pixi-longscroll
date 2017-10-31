@@ -19,7 +19,7 @@ export default class Renderer extends WebGLRenderer {
 
     window.addEventListener('resize', this.resizeHandler.bind(this));
 
-    this.resizeHandler()
+    this.resizeHandler();
   }
 
   /**
@@ -28,7 +28,8 @@ export default class Renderer extends WebGLRenderer {
    */
   resizeHandler() {
     Store.dispatch({ type: 'RENDERER.RESIZE'});
-    this.resize(window.innerWidth, window.innerHeight);
+    // TODO: this is sketchy as fuk
+    setTimeout(()=>{this.resize(document.body.clientWidth, window.innerHeight)}, 330);
   }
 
   /**

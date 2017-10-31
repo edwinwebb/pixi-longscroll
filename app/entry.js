@@ -33,13 +33,11 @@ wrapper.appendChild(renderer.view);
 
 // animate loop for tween
 Store.subscribe( ()=>{
-  const { tick, previousTick, scrollY } = Store.getState().Animation;
+  const { tick, previousTick, scrollY, scrollDelta } = Store.getState().Animation;
   const { height, width } = Store.getState().Renderer;
   if(tick !== previousTick) {
     TWEEN.update();
-    scrolls.forEach( (scroll, i) => {
-      scroll.update(scrollY, height, width)
-    })
+    scrolls.forEach( scroll => scroll.update(scrollY, scrollDelta, width, height) )
   }
 });
 

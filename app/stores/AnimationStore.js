@@ -16,7 +16,8 @@ export default (state = defaultState, action = {}) => {
           tick: state.tick + 1,
           previousTick: state.tick,
           currentTime: window.performance.now(),
-          scrollY: window.scrollY
+          scrollY: window.scrollY,
+          scrollDelta: state.scrollY + window.scrollY
         }
       break;
     default:

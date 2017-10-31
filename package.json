@@ -1,8 +1,8 @@
 {
-  "name": "pixi-seed",
-  "version": "0.3.1",
-  "repository": "https://github.com/edwinwebb/pixi-seed",
-  "description": "Pixi.js project seed / boiler-plate with ES6, Webpack and Redux",
+  "name": "pixi-longscroll",
+  "version": "0.1.0",
+  "repository": "https://github.com/edwinwebb/pixi-longscroll",
+  "description": "An example of longscrolling in PIXI.js",
   "scripts": {
     "start": "NODE_ENV=development webpack-dev-server",
     "webpack": "webpack -p --config ./webpack.config.js",

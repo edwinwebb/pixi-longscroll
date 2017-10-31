@@ -5,11 +5,10 @@ export default class LongScroll extends Container {
 
   constructor(color, number) {
     super();
-    const { canvasWidth, canvasHeight } = Store.getState().Renderer; 
+    const { width, height } = Store.getState().Renderer;
+    this.index = number;
 
-    console.log(canvasWidth, canvasHeight)
-
-    this.bg = new Graphics().beginFill(color).drawRect(0,0,canvasWidth, canvasHeight);
+    this.bg = new Graphics().beginFill(color).drawRect(0,0, width, height);
 
     this.addChild(this.bg);
 
@@ -22,9 +21,17 @@ export default class LongScroll extends Container {
   exit() {}
 
   // page gets update on v-pos
-  update(position) {}
+  update(scrollY = 0, height = 800, width) {
+    this.position.y = (this.index * height) - scrollY;
+    if(width !== this.width || height !== this.height) {
+      this.bg.width = width;
+      this.bg.height = height;
+    }
+  }
 
-  // resize handler 
-  resize() {}
+  // resize handler
+  resize() {
+
+  }
 
 }

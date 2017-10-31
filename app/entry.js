@@ -9,8 +9,8 @@
 
 import './index.html';
 import { totalScreens } from './constants/AppConstants';
+import { Container } from 'pixi.js';
 import Renderer from './Renderer/Renderer';
-import ScaledContainer from './displayobjects/ScaledContainer/ScaledContainer';
 import Store from './stores/Store';
 import * as TWEEN from 'es6-tween';
 import Loader from './screens/Loader';
@@ -22,19 +22,24 @@ import SEEDS from './displayobjects/Background/millet.jpg';
 const renderer = new Renderer({
   resolution: window.devicePixelRatio
 });
-const app = new ScaledContainer();
+const app = new Container();
 const loader = new Loader();
 const wrapper = document.querySelector('#wrapper');
 const colors = [0x5C4B51, 0x8CBEB2, 0xF2EBBF, 0xF3B562, 0xF06060];
+const scrolls = [];
 
 // append
 wrapper.appendChild(renderer.view);
 
 // animate loop for tween
 Store.subscribe( ()=>{
-  const { tick, previousTick } = Store.getState().Animation;
+  const { tick, previousTick, scrollY } = Store.getState().Animation;
+  const { height, width } = Store.getState().Renderer;
   if(tick !== previousTick) {
-    TWEEN.update()
+    TWEEN.update();
+    scrolls.forEach( (scroll, i) => {
+      scroll.update(scrollY, height, width)
+    })
   }
 });
 
@@ -52,8 +57,9 @@ loader.onLoaded( ()=>{
 
   // add loaders
   for (let index = 0; index < totalScreens; index++) {
-    const e = new LongScroll(colors[index]);
+    const e = new LongScroll(colors[index], index);
     const { height } = Store.getState().Renderer;
+    scrolls.push(e);
     app.addChild(e);
     e.position.y = height * index;
   }

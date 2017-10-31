@@ -2,7 +2,7 @@ import { canvasWidth, canvasHeight } from '../constants/AppConstants';
 
 const windowSize = () => ({
   width: document.body.clientWidth,
-  height: window.innerHeight,
+  height: document.documentElement.clientHeight,
   resolution: window.devicePixelRatio,
   stageCenter: {x: document.body.clientWidth / 2, y: window.innerHeight / 2}
 });

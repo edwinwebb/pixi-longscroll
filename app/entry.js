@@ -20,7 +20,8 @@ import BG from './displayobjects/Background/diagnostic.png';
 import SEEDS from './displayobjects/Background/millet.jpg';
 
 const renderer = new Renderer({
-  resolution: window.devicePixelRatio
+  resolution: window.devicePixelRatio,
+  backgroundColor: 0x000000
 });
 const app = new Container();
 const loader = new Loader();

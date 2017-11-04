@@ -12,9 +12,11 @@ import { totalScreens } from './constants/AppConstants';
 import { Container } from 'pixi.js';
 import Renderer from './Renderer/Renderer';
 import Store from './stores/Store';
+import {ScrollStore} from './stores/Store';
 import * as TWEEN from 'es6-tween';
 import Loader from './screens/Loader';
 import LongScroll from './screens/LongScroll';
+import SideBar from './displayobjects/SideBar/SideBar';
 
 import BG from './displayobjects/Background/diagnostic.png';
 import SEEDS from './displayobjects/Background/millet.jpg';
@@ -25,6 +27,7 @@ const renderer = new Renderer({
 });
 const app = new Container();
 const loader = new Loader();
+const sideBar = new SideBar();
 const wrapper = document.body;
 const colors = [0x5C4B51, 0x8CBEB2, 0xF2EBBF, 0xF3B562, 0xF06060];
 const scrolls = [];
@@ -40,6 +43,17 @@ Store.subscribe( ()=>{
     TWEEN.update();
     scrolls.forEach( scroll => scroll.update(scrollY, scrollDelta, width, height) )
   }
+});
+
+// test out scroller store
+window.addEventListener('scroll', ()=>{
+  ScrollStore.dispatch({type: 'SCROLL.TICK'});
+});
+
+ScrollStore.subscribe( ()=>{
+  const  Scroll  = ScrollStore.getState();
+  // const { currentPage, totalHeight, totalPages, totalPercent, pageHeight, direction, scrollY } = Scroll;
+  sideBar.update(Scroll)
 });
 
 // add loader and begin
@@ -63,6 +77,8 @@ loader.onLoaded( ()=>{
     e.position.y = height * index;
   }
 
+  ScrollStore.dispatch({type: 'SCROLL.TICK'});
+  app.addChild(sideBar);
 } );
 
 // start the render loop

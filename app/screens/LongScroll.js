@@ -1,24 +1,89 @@
 import { Container, Graphics, Text } from 'pixi.js';
 import Store from '../stores/Store';
 import { Tween } from 'es6-tween';
+import ScreenNumber from '../displayobjects/ScreenNumber/ScreenNumber'
 
-function debounce(fn, wait) {
-  let timeout=null;
-  const c=()=>{ clearTimeout(timeout); timeout=null; };
-  const t=fn=>{ timeout=setTimeout(fn,wait); };
-  return ()=>{
-      const context=this;
-      const args=arguments;
-      let f=()=>{ fn.apply(context,args); };
-      timeout
-          ? c()||t(f)
-          : t(c)||f();
+const colors = [0x5C4B51, 0x8CBEB2, 0xF2EBBF, 0xF3B562, 0xF06060];
+
+class LongScrollPage extends Container {
+  constructor(color, number) {
+    super();
+    const { width, height } = Store.getState().Renderer;
+    this.index = number;
+
+    this.tween = new Tween(this.position);
+    this.bg = new Graphics().beginFill(color).drawRect(0,0, width, height);
+    this.number = new ScreenNumber(number + 1);
+    this.bg.alpha = 1;
+    this.addChild(this.bg, this.number);
+
+  }
+
+  enter(direction) {
+    if(direction == 'down') {
+    }
+    this.visible = true;
+  }
+
+  exit(direction) {
+    this.visible = false;
+  }
+
+  update(scrollY) {
+    this.position.y = (this.index * this.bg.height) - scrollY;
+  }
+
+  resize(width, height) {
+    const w = width - 300;
+    this.number.position.x = (w / 2) + 300 - 200;
+    this.number.position.y = height / 2 - 200;
   }
 }
 
-const NEARPAD = 100;
-
 export default class LongScroll extends Container {
+  constructor(totalScreens) {
+    super();
+
+    this.totalScreens = totalScreens;
+  }
+
+  addScreens() {
+    // add loaders
+    for (let index = 0; index < this.totalScreens; index++) {
+      const e = new LongScrollPage(colors[index], index);
+      const { height } = Store.getState().Renderer;
+      this.addChild(e);
+      e.position.y = height * index;
+    }
+  }
+
+  update(scrollData) {
+    this.children.forEach( child => child.update(scrollData.scrollY) );
+  }
+
+  resize(width, height) {
+    this.children.forEach( child => child.resize(width, height) );
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class LongScrollBack extends Container {
 
   constructor(color, number) {
     super();

@@ -12,12 +12,11 @@ import { totalScreens } from './constants/AppConstants';
 import { Container } from 'pixi.js';
 import Renderer from './Renderer/Renderer';
 import Store from './stores/Store';
-import {ScrollStore} from './stores/Store';
+import { ScrollStore } from './stores/Store';
 import * as TWEEN from 'es6-tween';
 import Loader from './screens/Loader';
 import LongScroll from './screens/LongScroll';
 import SideBar from './displayobjects/SideBar/SideBar';
-import ScreenNumber from './displayobjects/ScreenNumber/ScreenNumber';
 
 import BG from './displayobjects/Background/diagnostic.png';
 import SEEDS from './displayobjects/Background/millet.jpg';
@@ -29,40 +28,44 @@ const renderer = new Renderer({
 const app = new Container();
 const loader = new Loader();
 const sideBar = new SideBar();
+const longScroll = new LongScroll(totalScreens);
 const wrapper = document.body;
-const colors = [0x5C4B51, 0x8CBEB2, 0xF2EBBF, 0xF3B562, 0xF06060];
-const scrolls = [];
-const test = new ScreenNumber(1);
+let previousSize = {
+  x: 0,
+  y: 0
+}
 
 // append
 wrapper.appendChild(renderer.view);
 
 // animate loop for tween
 Store.subscribe( ()=>{
-  const { tick, previousTick, scrollY, scrollDelta } = Store.getState().Animation;
+  const { tick, previousTick } = Store.getState().Animation;
   const { height, width } = Store.getState().Renderer;
   if(tick !== previousTick) {
     TWEEN.update();
-    scrolls.forEach( scroll => scroll.update(scrollY, scrollDelta, width, height) )
   }
+  if(width !== previousSize.x || height !== previousSize.y) {
+    longScroll.resize(width, height);
+  }
+  previousSize.x = width;
+  previousSize.y = height;
 });
 
-// test out scroller store
+// update Scroller Store
 window.addEventListener('scroll', ()=>{
   ScrollStore.dispatch({type: 'SCROLL.TICK'});
 });
 
 ScrollStore.subscribe( ()=>{
   const scroll = ScrollStore.getState();
-  // const { currentPage, totalHeight, totalPages, totalPercent, pageHeight, direction, scrollY } = Scroll;
   sideBar.update(scroll)
-  test.update(scroll.totalScrolled)
-  console.log(scroll.totalScrolled)
+  longScroll.update(scroll);
 });
 
 // add loader and begin
 app.addChild(loader);
-loader.start([BG, SEEDS]);
+loader.start([BG, SEEDS]); // TODO - remove
 
 // remove loader then show example once complete
 loader.onLoaded( ()=>{
@@ -72,20 +75,11 @@ loader.onLoaded( ()=>{
   document.documentElement.classList.add('loaded');
   wrapper.style.height = `${100 * totalScreens}%`;
 
-  // add loaders
-  for (let index = 0; index < totalScreens; index++) {
-    const e = new LongScroll(colors[index], index);
-    const { height } = Store.getState().Renderer;
-    scrolls.push(e);
-    app.addChild(e);
-    e.position.y = height * index;
-  }
-
   ScrollStore.dispatch({type: 'SCROLL.TICK'});
+  app.addChild(longScroll);
   app.addChild(sideBar);
-  app.addChild(test);
-  test.position.x = 200;
-  test.position.y = 300;
+  longScroll.addScreens();
+  Store.dispatch({type: 'RENDERER.RESIZE'});
 } );
 
 // start the render loop

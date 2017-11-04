@@ -57,7 +57,7 @@ export default class LongScroll extends Container {
     const percentScroll = Math.round(Math.abs(((bottom - scrollY) / this.height) - 1) * 100);
     const onScreen = scrollY >= top && scrollY <= bottom;
     const nearScreen = scrollY >= top - NEARPAD && scrollY <= bottom - NEARPAD;
-    const goingDown = this.detla < 0;
+    const goingDown = detla < 0;
 
     // normal scroll
     // this.position.y = (this.index * this.height) - scrollY;

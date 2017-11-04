@@ -14,7 +14,7 @@ export default class ScreenNumber extends Container {
   constructor(index) {
     super();
 
-    this.bg = new Graphics().lineStyle(20, 0x888888, 1).arc(size, size, size, -Math.PI / 2, Math.PI * 2, false);
+    this.bg = new Graphics().lineStyle(20, 0x000000, 0.4).arc(size, size, size, -Math.PI / 2, Math.PI * 1.501, false);
     this.progress = new Graphics();
     this.number = new Text(index, {textAlign: 'center', fontSize: size * 1.5, fill: 0xFEFEFE, fontFamily: 'Arial'});
     this.number.position.x = size * 0.5;

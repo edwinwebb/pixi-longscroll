@@ -6,7 +6,7 @@ import ScreenNumber from '../displayobjects/ScreenNumber/ScreenNumber'
 const colors = [0x5C4B51, 0x8CBEB2, 0xF2EBBF, 0xF3B562, 0xF06060];
 
 class LongScrollPage extends Container {
-  constructor(color, number) {
+  constructor(color, number = 0) {
     super();
     const { width, height } = Store.getState().Renderer;
     this.index = number;
@@ -58,7 +58,14 @@ export default class LongScroll extends Container {
   }
 
   update(scrollData) {
-    this.children.forEach( child => child.update(scrollData.scrollY) );
+    const { totalPages, totalScrolled, totalHeight, currentPage, currentPageScrolled , scrollY, clientHeight } = scrollData;
+    const currentChild = this.children[currentPage];
+    if(!this.children.length) return;
+    this.children.forEach( child => {
+      child.update(scrollY);
+      child.number.update(0);
+    } );
+    currentChild.number.update(currentPageScrolled)
   }
 
   resize(width, height) {

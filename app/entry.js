@@ -17,6 +17,7 @@ import * as TWEEN from 'es6-tween';
 import Loader from './screens/Loader';
 import LongScroll from './screens/LongScroll';
 import SideBar from './displayobjects/SideBar/SideBar';
+import ScreenNumber from './displayobjects/ScreenNumber/ScreenNumber';
 
 import BG from './displayobjects/Background/diagnostic.png';
 import SEEDS from './displayobjects/Background/millet.jpg';
@@ -31,6 +32,7 @@ const sideBar = new SideBar();
 const wrapper = document.body;
 const colors = [0x5C4B51, 0x8CBEB2, 0xF2EBBF, 0xF3B562, 0xF06060];
 const scrolls = [];
+const test = new ScreenNumber(1);
 
 // append
 wrapper.appendChild(renderer.view);
@@ -51,9 +53,11 @@ window.addEventListener('scroll', ()=>{
 });
 
 ScrollStore.subscribe( ()=>{
-  const  Scroll  = ScrollStore.getState();
+  const scroll = ScrollStore.getState();
   // const { currentPage, totalHeight, totalPages, totalPercent, pageHeight, direction, scrollY } = Scroll;
-  sideBar.update(Scroll)
+  sideBar.update(scroll)
+  test.update(scroll.totalScrolled)
+  console.log(scroll.totalScrolled)
 });
 
 // add loader and begin
@@ -79,6 +83,9 @@ loader.onLoaded( ()=>{
 
   ScrollStore.dispatch({type: 'SCROLL.TICK'});
   app.addChild(sideBar);
+  app.addChild(test);
+  test.position.x = 200;
+  test.position.y = 300;
 } );
 
 // start the render loop

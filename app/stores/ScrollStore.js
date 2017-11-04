@@ -20,7 +20,7 @@ export default (state = defaultState, action = {}) => {
         const currentPage = Math.floor(scrollY / clientHeight);
         const pageAbove = currentPage - 1;
         const pageBelow = currentPage + 1;
-        const totalScrolled = scrollY / totalHeight;
+        const totalScrolled = scrollY / (clientHeight * (totalScreens - 1)) ;
         const currentPageScrolled = (scrollY - currentPage * clientHeight) / clientHeight;
         
         return {

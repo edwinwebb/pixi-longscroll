@@ -16,21 +16,21 @@ class LongScrollPage extends Container {
     this.number = new ScreenNumber(number + 1);
     this.bg.alpha = 1;
     this.addChild(this.bg, this.number);
-
+    this.ease = 0;
   }
 
   enter(direction) {
-    if(direction == 'down') {
-    }
-    this.visible = true;
+    console.log(this.index + ' enter ' + direction);
   }
 
   exit(direction) {
-    this.visible = false;
+    console.log(this.index + ' exit to ' + direction);
   }
 
-  update(scrollY) {
-    this.position.y = (this.index * this.bg.height) - scrollY;
+  update() {
+    const speed = this.targetY === 0 ? 0.1 : 0.03;
+    this.ease += (this.targetY - this.ease) * speed;
+    this.position.y = this.ease;
   }
 
   resize(width, height) {
@@ -43,29 +43,52 @@ class LongScrollPage extends Container {
 export default class LongScroll extends Container {
   constructor(totalScreens) {
     super();
-
     this.totalScreens = totalScreens;
   }
 
   addScreens() {
-    // add loaders
     for (let index = 0; index < this.totalScreens; index++) {
       const e = new LongScrollPage(colors[index], index);
       const { height } = Store.getState().Renderer;
       this.addChild(e);
-      e.position.y = height * index;
+      e.position.y = height;
+      e.targetY = height;
     }
+    this.children[0].position.y = 0;
+    this.children[0].targetY = 0;
+
+    Store.subscribe( ()=>{
+      const { tick, previousTick } = Store.getState().Animation;
+      if(tick !== previousTick) {
+        this.children.forEach( child => child.update())
+      }
+    });
   }
 
   update(scrollData) {
-    const { totalPages, totalScrolled, totalHeight, currentPage, currentPageScrolled , scrollY, clientHeight } = scrollData;
+    const { currentPage, currentPageScrolled, clientHeight } = scrollData;
     const currentChild = this.children[currentPage];
+
     if(!this.children.length) return;
-    this.children.forEach( child => {
-      child.update(scrollY);
+
+    // update all
+    this.children.forEach( (child, i) => {
       child.number.update(0);
+
+      if(i < currentPage) {
+        child.targetY = -clientHeight;
+      }
+
+      if(i > currentPage) {
+        child.targetY = clientHeight;
+      }
+
+      if(i === currentPage) {
+        child.targetY = 0;
+      }
     } );
-    currentChild.number.update(currentPageScrolled)
+
+    currentChild.number.update(currentPageScrolled);
   }
 
   resize(width, height) {

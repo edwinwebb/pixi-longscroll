@@ -16,6 +16,7 @@ export default (state = defaultState, action = {}) => {
         const { scrollY } = window;
         const { clientHeight } = document.documentElement;
         const delta = state.scrollY - scrollY;
+        const direction = delta > 0 ? 'up' : 'down';
         const totalHeight = clientHeight * totalScreens;
         const currentPage = Math.floor(scrollY / clientHeight);
         const pageAbove = currentPage - 1;
@@ -27,7 +28,7 @@ export default (state = defaultState, action = {}) => {
           ...state,
           delta,
           scrollY,
-          direction: delta > 0 ? 'up' : 'down',
+          direction,
           clientHeight,
           pageHeight: clientHeight,
           totalHeight,

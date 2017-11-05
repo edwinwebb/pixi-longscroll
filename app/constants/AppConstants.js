@@ -1,3 +1,3 @@
 export const canvasWidth = 1920;
 export const canvasHeight = 1080;
-export const totalScreens = 5;
+export const totalScreens = 25;

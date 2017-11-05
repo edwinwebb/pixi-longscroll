@@ -48,7 +48,7 @@ export default class LongScroll extends Container {
 
   addScreens() {
     for (let index = 0; index < this.totalScreens; index++) {
-      const e = new LongScrollPage(colors[index], index);
+      const e = new LongScrollPage(colors[index % 5], index);
       const { height } = Store.getState().Renderer;
       this.addChild(e);
       e.position.y = height;

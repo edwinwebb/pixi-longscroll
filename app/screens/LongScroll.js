@@ -4,6 +4,8 @@ import { Tween } from 'es6-tween';
 import ScreenNumber from '../displayobjects/ScreenNumber/ScreenNumber'
 
 const colors = [0x071930, 0x023852, 0x03A694, 0xF24738, 0x851934];
+const EXIT_ALPHA = 0;
+const TWEEN_DURATION = 366;
 
 class LongScrollPage extends Container {
   constructor(color, number = 0) {
@@ -17,16 +19,17 @@ class LongScrollPage extends Container {
     this.bg.alpha = 1;
     this.addChild(this.bg, this.number);
     this.ease = 0;
-    this.alpha = number === 0 ? 1 : 0.2;
+    this.alpha = number === 0 ? 1 : EXIT_ALPHA;
   }
 
   enter() {
-    this.tween.stop().to({alpha: 1}, 200).start();
+    this.tween.stop().to({alpha: 1}, TWEEN_DURATION).start();
   }
 
   exit() {
     this.tween.stop();
-    this.alpha = 0.2;
+    //this.alpha = EXIT_ALPHA;
+    this.tween.stop().to({alpha: EXIT_ALPHA}, TWEEN_DURATION / 2).start();
   }
 
   update() {

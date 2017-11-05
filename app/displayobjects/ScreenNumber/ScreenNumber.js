@@ -22,9 +22,8 @@ export default class ScreenNumber extends Container {
     this.number.position.y = size - metric.height / 2;
     this.addChild(this.bg, this.progress, this.number);
   }
-  
+
   update(progress) {
     this.progress.clear().lineStyle(20, 0xFFFFFF, 1).arc(size, size, size, -Math.PI / 2, (progress * (Math.PI * 2.01))-Math.PI / 2);
   }
-  
 }

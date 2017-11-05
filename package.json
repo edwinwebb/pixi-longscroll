@@ -7,7 +7,6 @@
     "start": "NODE_ENV=development webpack-dev-server",
     "webpack": "webpack -p --config ./webpack.config.js",
     "build": "NODE_ENV=production npm run webpack",
-    "prewebpack": "npm run clean",
     "clean": "rimraf ./build && mkdir ./build",
     "lint": "eslint ./app/**/*.js",
     "reactman": "reactman --config ./templates/reactman.config.js"

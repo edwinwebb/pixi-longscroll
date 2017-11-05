@@ -13,7 +13,7 @@ class LongScrollPage extends Container {
     const { width, height } = Store.getState().Renderer;
     this.index = number;
 
-    this.tween = new Tween(this);
+    //this.tween = new Tween(this);
     this.bgColor = color;
     this.bg = new Graphics().beginFill(color).drawRect(0,0, width, height);
     this.number = new ScreenNumber(number + 1);

@@ -13,7 +13,7 @@ export default class ScreenNumber extends Container {
 
   constructor(index) {
     super();
-    const textStyle = new TextStyle({textAlign: 'center', fontSize: size * 1.5, fill: 0xFEFEFE, fontFamily: 'Arial'});
+    const textStyle = new TextStyle({textAlign: 'center', fontSize: size, fill: 0xFEFEFE, fontFamily: 'Arial'});
     const metric = TextMetrics.measureText(index.toString(), textStyle)
     this.bg = new Graphics().lineStyle(20, 0x000000, 0.4).arc(size, size, size, -Math.PI / 2, Math.PI * 1.501, false);
     this.progress = new Graphics();

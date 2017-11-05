@@ -3,7 +3,7 @@ import Store from '../stores/Store';
 import { Tween } from 'es6-tween';
 import ScreenNumber from '../displayobjects/ScreenNumber/ScreenNumber'
 
-const colors = [0x5C4B51, 0x8CBEB2, 0xF2EBBF, 0xF3B562, 0xF06060];
+const colors = [0x071930, 0x023852, 0x03A694, 0xF24738, 0x851934];
 
 class LongScrollPage extends Container {
   constructor(color, number = 0) {

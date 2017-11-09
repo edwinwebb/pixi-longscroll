@@ -5,10 +5,12 @@ import ScreenNumber from '../displayobjects/ScreenNumber/ScreenNumber'
 const colors = [0x071930, 0x023852, 0x03A694, 0xF24738, 0x851934];
 const EXIT_ALPHA = 0.4;
 
+// example calls from parent class 
 class LongScrollPage extends Container {
-  constructor(color, number = 0) {
+  constructor(number = 0) {
     super();
     const { width, height } = Store.getState().Renderer;
+    const color = colors[number % 5];
     this.index = number;
     this.bgColor = color;
     this.bg = new Graphics().beginFill(color).drawRect(0,0, width, height);
@@ -46,7 +48,7 @@ export default class LongScroll extends Container {
   addScreens() {
     const { height } = Store.getState().Renderer;
     for (let index = 0; index < this.totalScreens; index++) {
-      const e = new LongScrollPage(colors[index % 5], index);
+      const e = new LongScrollPage(index);
       this.addChild(e);
       e.position.y = height;
       e.targetY = height;
